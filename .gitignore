@@ -7,7 +7,7 @@
 .yarn/install-state.gz
 /server/node_modules
 /server/.env
-
+.env
 # testing
 /coverage
 
