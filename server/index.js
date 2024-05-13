@@ -3,6 +3,7 @@ const express = require("express");
 const bodyParser = require("body-parser");
 const session = require("express-session");
 const postgres = require("postgres");
+const cors = require("cors");
 
 const app = express();
 
@@ -14,6 +15,7 @@ const sql = postgres({
   ssl: { require: true, rejectUnauthorized: false },
 });
 
+app.use(cors());
 app.use(bodyParser.json());
 
 app.use(

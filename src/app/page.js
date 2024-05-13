@@ -1,6 +1,20 @@
+"use client";
 import Image from "next/image";
+import React, { useEffect } from "react";
 
 export default function Home() {
+  // useEffect(() => {
+  //   fetch("https://server-cw25zaycy-jinpark1s-projects.vercel.app/api/test")
+  //     .then((response) => response.json())
+  //     .then((data) => console.log(data));
+  // }, []);
+
+  useEffect(() => {
+    fetch("https://server-cw25zaycy-jinpark1s-projects.vercel.app/api/test")
+      .then((response) => response.json())
+      .then((data) => console.log(data));
+  }, []);
+
   return (
     <main className="flex min-h-screen flex-col items-center justify-between p-24">
       <div className="z-10 max-w-5xl w-full items-center justify-between font-mono text-sm lg:flex">
