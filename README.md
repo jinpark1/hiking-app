@@ -8,7 +8,7 @@ postgres from vercel
 npm run seed
 to run scripts/seed.js
 
-to deploy server run on cmd
+to deploy nodejs express server run on cmd
 vercel
 
 This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).

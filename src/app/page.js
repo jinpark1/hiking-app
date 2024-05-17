@@ -10,9 +10,10 @@ export default function Home() {
   // }, []);
 
   useEffect(() => {
-    fetch("https://server-cw25zaycy-jinpark1s-projects.vercel.app/api/test")
+    fetch("https://server-jinpark1-jinpark1s-projects.vercel.app/api/test")
       .then((response) => response.json())
-      .then((data) => console.log(data));
+      .then((data) => console.log(data))
+      .catch((error) => console.error("There has been a problem with your fetch operation:", error));
   }, []);
 
   return (

@@ -15,7 +15,15 @@ const sql = postgres({
   ssl: { require: true, rejectUnauthorized: false },
 });
 
-app.use(cors());
+const corsOptions = {
+  origin: "*",
+  optionsSuccessStatus: 200,
+  credentials: true,
+  allowedHeaders: ["Content-Type", "Authorization"],
+  methods: ["GET", "POST", "DELETE", "UPDATE", "PUT", "PATCH"],
+};
+
+app.use(cors(corsOptions));
 app.use(bodyParser.json());
 
 app.use(
@@ -29,6 +37,8 @@ app.use(
   })
 );
 
+app.get("/", (req, res) => res.send("Express on Vercel"));
+
 app.get("/api/test", async (req, res) => {
   try {
     const results = await sql`SELECT * FROM test`;
@@ -38,40 +48,40 @@ app.get("/api/test", async (req, res) => {
   }
 });
 
-// Sample API endpoint to get inventory items
-app.get("/api/inventory", async (req, res) => {
-  try {
-    const results = await sql`SELECT * FROM inventory`;
-    res.status(200).send(results);
-  } catch (error) {
-    res.status(500).send({ error: error.message });
-  }
-});
+// // Sample API endpoint to get inventory items
+// app.get("/api/inventory", async (req, res) => {
+//   try {
+//     const results = await sql`SELECT * FROM inventory`;
+//     res.status(200).send(results);
+//   } catch (error) {
+//     res.status(500).send({ error: error.message });
+//   }
+// });
 
-// Sample API endpoint to add an inventory item
-app.post("/api/inventory", async (req, res) => {
-  try {
-    const { houseName, housePrice, swimmingPool, houseImage } = req.body;
-    const results = await sql`
-      INSERT INTO inventory (name, price, swimming_pool, image)
-      VALUES (${houseName}, ${housePrice}, ${swimmingPool}, ${houseImage})
-      RETURNING *`;
-    res.status(200).send(results);
-  } catch (error) {
-    res.status(500).send({ error: error.message });
-  }
-});
+// // Sample API endpoint to add an inventory item
+// app.post("/api/inventory", async (req, res) => {
+//   try {
+//     const { houseName, housePrice, swimmingPool, houseImage } = req.body;
+//     const results = await sql`
+//       INSERT INTO inventory (name, price, swimming_pool, image)
+//       VALUES (${houseName}, ${housePrice}, ${swimmingPool}, ${houseImage})
+//       RETURNING *`;
+//     res.status(200).send(results);
+//   } catch (error) {
+//     res.status(500).send({ error: error.message });
+//   }
+// });
 
-// Sample API endpoint to delete an inventory item
-app.delete("/api/inventory/:id", async (req, res) => {
-  try {
-    const { id } = req.params;
-    await sql`DELETE FROM inventory WHERE id = ${id}`;
-    res.status(200).send();
-  } catch (error) {
-    res.status(500).send({ error: error.message });
-  }
-});
+// // Sample API endpoint to delete an inventory item
+// app.delete("/api/inventory/:id", async (req, res) => {
+//   try {
+//     const { id } = req.params;
+//     await sql`DELETE FROM inventory WHERE id = ${id}`;
+//     res.status(200).send();
+//   } catch (error) {
+//     res.status(500).send({ error: error.message });
+//   }
+// });
 
 const port = process.env.PORT || 8080;
 app.listen(port, () => {
