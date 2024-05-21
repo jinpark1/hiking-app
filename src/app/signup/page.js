@@ -42,7 +42,6 @@ export default function Page() {
           alert(data.error);
         } else {
           console.log("data", data);
-          // localStorage.setItem("token", data.token);
           window.location.href = "/main";
         }
       })

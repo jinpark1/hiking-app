@@ -85,6 +85,7 @@ app.post("/api/register", async (req, res) => {
     const { email, password } = req.body;
     console.log("email", email);
     console.log("password", password);
+
     // Check if the user already exists
     const users = await sql`SELECT * FROM test_users WHERE email = ${email}`;
 
