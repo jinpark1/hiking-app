@@ -7,19 +7,6 @@ export default function Example() {
   const [password, setPassword] = useState("");
 
   const handleFormAction = (event) => {
-    console.log("handleFormAction", event);
-    console.log("email", email);
-    console.log("password", password);
-
-    // create a post request to the server with endpoint /api/login
-    // send the email and password to the server
-    // server will check if the email and password are correct
-    // if correct, server will return a jwt token
-    // store the jwt token in local storage
-    // redirect the user to the dashboard page
-    // if incorrect, server will return an error message
-    // display the error message to the user
-
     fetch("http://localhost:8080/api/login", {
       method: "POST",
       headers: {
