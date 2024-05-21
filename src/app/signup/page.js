@@ -23,11 +23,32 @@ export default function Page() {
     console.log("Password:", password);
   }, [password]);
 
-  const handleSubmit = async (event) => {
-    // get values from email and password
-    console.log("event", event);
-    console.log("email,", email);
+  const handleSubmit = (event) => {
+    console.log("handleSubmit", event);
+    console.log("email", email);
     console.log("password", password);
+
+    fetch("http://localhost:8080/api/register", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ email, password }),
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        console.log("data", data);
+        if (data.error) {
+          alert(data.error);
+        } else {
+          console.log("data", data);
+          // localStorage.setItem("token", data.token);
+          window.location.href = "/main";
+        }
+      })
+      .catch((error) => {
+        console.error("Error:", error);
+      });
   };
 
   return (
@@ -60,6 +81,8 @@ export default function Page() {
                   autoComplete="email"
                   required
                   className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                  onChange={(event) => setEmail(event.target.value)}
+                  value={email}
                 />
               </div>
             </div>

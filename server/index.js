@@ -4,6 +4,7 @@ const bodyParser = require("body-parser");
 const session = require("express-session");
 const postgres = require("postgres");
 const cors = require("cors");
+const bcrypt = require("bcrypt");
 
 const app = express();
 
@@ -43,6 +44,66 @@ app.get("/api/test", async (req, res) => {
   try {
     const results = await sql`SELECT * FROM test`;
     res.status(200).send(results);
+  } catch (error) {
+    res.status(500).send({ error: error.message });
+  }
+});
+
+// ----- user login & register endpoints -----
+app.post("/api/login", async (req, res) => {
+  try {
+    const { email, password } = req.body;
+    console.log("email", email);
+    console.log("password", password);
+    // Get the user from the database
+    const users = await sql`SELECT * FROM test_users WHERE email = ${email}`;
+
+    if (users.count > 0) {
+      const user = users[0];
+      console.log("users", users);
+      // Compare the provided password with the stored hash
+      const match = await bcrypt.compare(password, user.password);
+
+      if (match) {
+        // Passwords match
+        res.status(200).send({ message: "Login successful" });
+      } else {
+        // Passwords don't match
+        res.status(401).send({ message: "Invalid email or password" });
+      }
+    } else {
+      res.status(401).send({ message: "Invalid email or password" });
+    }
+  } catch (error) {
+    res.status(500).send({ error: error.message });
+  }
+});
+
+// user registration
+app.post("/api/register", async (req, res) => {
+  try {
+    const { email, password } = req.body;
+    console.log("email", email);
+    console.log("password", password);
+    // Check if the user already exists
+    const users = await sql`SELECT * FROM test_users WHERE email = ${email}`;
+
+    if (users.count > 0) {
+      res.status(400).send({ message: "User already exists" });
+    } else {
+      // Hash the password
+      const hashedPassword = await bcrypt.hash(password, 10);
+
+      // Insert the new user into the database
+      const result = await sql`INSERT INTO test_users (email, password) VALUES (${email}, ${hashedPassword})`;
+
+      if (result.count > 0) {
+        req.session.user = email;
+        res.status(200).send({ message: "Registration successful" });
+      } else {
+        throw new Error("Registration failed");
+      }
+    }
   } catch (error) {
     res.status(500).send({ error: error.message });
   }
