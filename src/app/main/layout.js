@@ -1,3 +1,9 @@
+import Header from "../ui/main/Header";
 export default function DashboardLayout({ children }) {
-  return <section>{children}</section>;
+  return (
+    <section>
+      <Header />
+      {children}
+    </section>
+  );
 }
